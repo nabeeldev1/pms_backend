@@ -1,5 +1,6 @@
 const Column = require('./app/models/column.model');
 const Task = require('./app/models/task.model');
+const ColumnOrder = require('./app/models/columnOrder.model');
 /**
  * Seed the database
  */
@@ -29,7 +30,7 @@ exports.columns = (req, res) => {
       { content: 'Design a Sidebar', createdBy: 'Nabeel' },
       { content: 'Design a Header', createdBy: 'Muhammad' },
       { content: 'Design a Footer', createdBy: 'Nabeel' },
-];
+    ];
   
     // use the Event model to insert/save
     for (t of tasks) {
@@ -41,9 +42,22 @@ exports.columns = (req, res) => {
               columnResponse.taskIds.push(taskResponse._id);
               columnResponse.save();
               // res.send(user);
-            })
-        });
+            });
+          });
       }
+  }
+
+  exports.columnOrder = (req, res) => {
+    let newColumnOrder = new ColumnOrder();
+    newColumnOrder.save()
+      .then(orderResponse => {
+        Column.find().then(columnResponse => {
+          for(column of columnResponse) {
+            orderResponse.columnOrder.push(column._id);
+            orderResponse.save();
+          }
+        });
+      });
   }
 
 
