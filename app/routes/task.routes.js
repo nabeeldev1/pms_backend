@@ -11,10 +11,10 @@ router.route('/add')
     .post(task.add)
 
 router.route('/:id')
-    .post(task.findOneAndUpdate)
+    .put(task.findOneAndUpdate)
 
 router.route('/:tid/:cid')
-    .get(task.delete)
+    .delete(task.delete)
 
 
 module.exports = router;
