@@ -1,6 +1,13 @@
-module.exports = (app) => {
-    const users = require('../controllers/user.controller.js');
+var express = require('express');
+var router = express.Router();
 
-    app.post('/users/', users.login);
 
-}
+const user = require('../controllers/user.controller.js');
+
+router.route('/')
+    // get all activities
+    .post(user.login)
+
+
+module.exports = router;
+
