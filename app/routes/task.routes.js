@@ -16,6 +16,9 @@ router.route('/:id')
 router.route('/:tid/:cid')
     .delete(task.delete)
 
+router.route('/drag')
+    .post(task.drag)
+
 
 module.exports = router;
 
