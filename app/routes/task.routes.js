@@ -3,21 +3,22 @@ var router = express.Router();
 
 
 const task = require('../controllers/task.controller.js');
+const user = require('../controllers/user.controller.js');
 
 router.route('/')
-    .get(task.findAll)
+    .get(user.loginRequired ,task.findAll)
 
 router.route('/add')
-    .post(task.add)
+    .post(user.loginRequired, task.add)
 
 router.route('/:id')
-    .put(task.findOneAndUpdate)
+    .put(user.loginRequired, task.findOneAndUpdate)
 
 router.route('/:tid/:cid')
-    .delete(task.delete)
+    .delete(user.loginRequired, task.delete)
 
 router.route('/drag')
-    .post(task.drag)
+    .post(user.loginRequired, task.drag)
 
 
 module.exports = router;

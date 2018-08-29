@@ -3,10 +3,11 @@ var router = express.Router();
 
 
 const columnOrder = require('../controllers/columnOrder.controller.js');
+const user = require('../controllers/user.controller.js');
 
 router.route('/')
     // get all activities
-    .get(columnOrder.findAll)
+    .get(user.loginRequired, columnOrder.findAll)
 
 
 module.exports = router;

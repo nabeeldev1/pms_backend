@@ -5,9 +5,10 @@ var router = express.Router();
 const user = require('../controllers/user.controller.js');
 
 router.route('/')
-    // get all activities
     .post(user.login)
 
+router.route('/register')
+    .post(user.register)
 
 module.exports = router;
 
