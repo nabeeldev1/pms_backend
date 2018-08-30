@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const TaskSchema = mongoose.Schema({
-    content:{
+    content: {
         type: String
     },
     createdBy: {

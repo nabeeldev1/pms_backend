@@ -17,6 +17,10 @@ const UserSchema = mongoose.Schema({
     hash_password: {
         type: String,
         required: true
+    },
+    role_id: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Role'
     }
 }, {
     timestamps: true

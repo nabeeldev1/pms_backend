@@ -41,8 +41,12 @@ var task = require('./app/routes/task.routes');
 var columnOrder = require('./app/routes/columnOrder.routes');
 var column = require('./app/routes/column.routes');
 var user = require('./app/routes/user.routes');
+var role = require('./app/routes/role.routes');
+var permission = require('./app/routes/permission.routes');
+var role_permission = require('./app/routes/role_permission.routes');
 
 app.use(function(req, res, next){
+    // console.log('-------Header-check-function---------');
     if(req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT') {
         jsonwebtoken.verify(req.headers.authorization.split(' ')[1], 'RESTFULAPIs', function(err, decode){
             if(err) {
@@ -70,6 +74,9 @@ function routing() {
     app.use('/column-orders', columnOrder);
     app.use('/columns', column);
     app.use('/users', user);
+    app.use('/roles', role);
+    app.use('/permissions', permission);
+    app.use('/role-permissions', role_permission);
 }
 
 // listen for requests

@@ -15,6 +15,7 @@ exports.findAll = (req, res, next) => {
 
 // Add task to database.
 exports.add = (req, res, next) => {
+    console.log('---------Add-Task-Function----------');
     let task = new Task(req.body);
     task.save()
         .then(taskResponse => {

@@ -6,20 +6,19 @@ const task = require('../controllers/task.controller.js');
 const user = require('../controllers/user.controller.js');
 
 router.route('/')
-    .get(user.loginRequired ,task.findAll)
+    .get(user.loginRequired, user.hasPermission('view-task'), task.findAll)
 
 router.route('/add')
-    .post(user.loginRequired, task.add)
+    .post(user.loginRequired, user.hasPermission('add-task'), task.add)
 
 router.route('/:id')
-    .put(user.loginRequired, task.findOneAndUpdate)
+    .put(user.loginRequired, user.hasPermission('update-task'), task.findOneAndUpdate)
 
 router.route('/:tid/:cid')
-    .delete(user.loginRequired, task.delete)
+    .delete(user.loginRequired, user.hasPermission('delete-task'), task.delete)
 
 router.route('/drag')
-    .post(user.loginRequired, task.drag)
+    .post(user.loginRequired, user.hasPermission('drag-task'), task.drag)
 
 
 module.exports = router;
-
