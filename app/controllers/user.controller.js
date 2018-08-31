@@ -10,8 +10,8 @@ exports.register = (req, res) => {
     newUser.hash_password = bcrypt.hashSync(req.body.password, 10);
     newUser.save(function(err, user) {
         if (err) {
-            return res.status(400).send({
-                message: err
+            res.status(400).send({
+                message: 'User registration failed.'
             });
         } else {
             user.hash_password = undefined;
@@ -25,10 +25,16 @@ exports.login = (req, res) => {
     User.findOne({ email: req.body.email }, function(err, user) {
         if (err) throw err;
         if (!user) {
-            res.status(401).json({ message: 'Authentication failed. User not found.' });
+            // res.status(401).json({ message: 'Authentication failed. User not found.' });
+            res.status(401).send({
+                message: 'Authentication failed. User not found.'
+            });
         } else if (user) {
             if (!user.comparePassword(req.body.password)) {
-                res.status(401).json({ message: 'Authentication failed. Wrong password.' });
+                // res.status(401).json({ message: 'Authentication failed. Wrong password.' });
+                res.status(401).send({
+                    message: 'Authentication failed. Wrong password.'
+                });
             } else {
                 user.hash_password = undefined;
                 return res.json({token: jwt.sign({ email: user.email, fullName: user.fullName, _id: user._id}, 'RESTFULAPIs'), user: user});
@@ -42,7 +48,10 @@ exports.loginRequired = (req, res, next) => {
     if (req.user) {
         next();
     } else {
-        return res.status(401).json({ message: 'Unauthorized user!' });
+        // return res.status(401).json({ message: 'Unauthorized user!' });
+        res.status(401).send({
+            message: 'Unauthorized user.'
+        });
     }
 };
 
@@ -54,15 +63,15 @@ exports.hasPermission = (permissions) => {
             if(user) {
                 Permission.findOne({ code: permissions }, function(err, permission){
                     if(!permission) {
-                        console.log('---1-Permission-Denied-----');
-                        console.log(err);
+                        res.status(403).send({
+                            message: 'Permission denied.'
+                        });
                     }
                     if(permission) {
                         Role_Permission.findOne({ role_id: user.role_id, permission_id: permission._id }, function(err, role_perm){
                             if(!role_perm) {
-                                console.log('---2-Permission-Denied-----');
                                 res.status(403).send({
-                                    message: 'Permission denied!'
+                                    message: 'Permission denied.'
                                 });
                             }
                             if(role_perm) {
@@ -73,8 +82,9 @@ exports.hasPermission = (permissions) => {
                 });
             }
             if(!user) {
-                console.log('-------Not-User------');
-                return res.status(401).json({ message: 'Permission denied!' });
+                res.status(403).send({
+                    message: 'User not found.'
+                });
             }
         });
     }

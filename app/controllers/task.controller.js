@@ -8,14 +8,13 @@ exports.findAll = (req, res, next) => {
             res.send(tasks);
         }).catch(err => {
             res.status(500).send({
-                message: err.message || "Some error occurred while retrieving data."
+                message: "Task data not found."
             });
         });
 };
 
 // Add task to database.
 exports.add = (req, res, next) => {
-    console.log('---------Add-Task-Function----------');
     let task = new Task(req.body);
     task.save()
         .then(taskResponse => {
@@ -27,14 +26,14 @@ exports.add = (req, res, next) => {
                             res.send({ taskResponse, columnResponse });
                         }).catch(err => {
                             res.status(500).send({
-                                message: err.message || "Column is not modified."
+                                message: "To do column not updated."
                             });                
                         });
                 });
         })
         .catch(err => {
             res.status(501).send({
-                message: err.message || "Entity is not created!"
+                message: "Task is not created!"
             });
         });
 };
@@ -43,11 +42,10 @@ exports.add = (req, res, next) => {
 exports.findOneAndUpdate = (req, res, next) => {
     Task.findOneAndUpdate({_id: req.params.id}, {$set: {content: req.body.content} }, {new: true})
         .then(task => {
-            // console.log(task);
             res.send(task);
         }).catch(err => {
             res.status(500).send({
-                message: err.message || "Some error occurred while retrieving data!"
+                message: "Task update failed."
             });
         });
 };
@@ -70,25 +68,25 @@ exports.delete = (req, res, next) => {
                                     })
                                     .catch(err => {
                                         res.status(500).send({
-                                            message: err.message || "Desired task does not exist!"
+                                            message: err.message || "Task data not found."
                                         });        
                                     })
                             })
                             .catch(err => {
                                 res.status(500).send({
-                                    message: err.message || "Error saving column!"
+                                    message: err.message || "Error saving column."
                                 });         
                             });
                     }
                 })
                 .catch(err => {
                     res.status(500).send({
-                        message: err.message || "Column does not exist against this Id!"
+                        message: err.message || "Column not found."
                     });
                 });
         }).catch(err => {
             res.status(500).send({
-                message: err.message || "Task cannot be deleted!"
+                message: err.message || "Failed! Task cannot be deleted!"
             });
         });
 };
@@ -112,7 +110,7 @@ exports.drag = (req, res, next) => {
                                             res.send(columns);
                                         }).catch(err => {
                                             res.status(500).send({
-                                                message: err.message || "Some error occurred while retrieving data."
+                                                message: err.message || "Column data not found."
                                             });
                                         });
                                 })
@@ -137,7 +135,7 @@ exports.drag = (req, res, next) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Column does not exist!"
+                message: err.message || "Column not found."
             });
         })
 };
